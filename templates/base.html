@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- start: Meta -->
+    <meta charset="utf-8">
+    <meta name="description" content="Bootstrap Metro Dashboard">
+    <meta name="author" content="Dennis Ji">
+    <meta name="keyword" content="Metro, Metro UI, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <!-- end: Meta -->
+    <!-- start: Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- end: Mobile Specific -->
+    {% include "head.html" %}
+    {% block head %}
+        <title>{% block title %}{% endblock %} - ReleaseManager</title>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    {% endblock %}
+</body>
+<!--
+<footer>
+    <p><span style="text-align:left;float:left">&copy; 2013 <a href="http://themifycloud.com/downloads/janux-free-responsive-admin-dashboard-template/" alt="Bootstrap_Metro_Dashboard">JANUX Responsive Dashboard</a></span>
+    </p>
+</footer>
+-->
+{% include "scripts.html" %}
+</html>
