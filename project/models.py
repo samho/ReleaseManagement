@@ -7,14 +7,23 @@ class Project(models.Model):
     comment = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField('Date of creating project.')
 
+    def __str__(self):
+        return self.name
+
 
 class ProjectUserMapping(models.Model):
     project_id = models.IntegerField(default=0)
     user_id = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "Project: %d -> User: %d" % (self.project_id, self.user_id)
+
 
 class ProjectAppMapping(models.Model):
     project_id = models.IntegerField(default=0)
     app_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "Project: %d -> Application: %d" % (self.project_id, self.app_id)
 
 
