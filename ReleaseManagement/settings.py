@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'service.apps.ServiceConfig',
     'deployment.apps.DeploymentConfig',
     'audit.apps.AuditConfig',
+    'utils.apps.UtilsConfig',
 ]
 
 MIDDLEWARE = [

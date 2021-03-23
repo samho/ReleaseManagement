@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Service(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)
     comment = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -11,8 +11,8 @@ class Service(models.Model):
 
 
 class ServicePort(models.Model):
-    service_id = models.IntegerField(default=0)
-    service_port = models.IntegerField(default=0)
+    service_id = models.IntegerField(default=0, db_index=True)
+    service_port = models.IntegerField(default=0, db_index=True)
     comment = models.CharField(max_length=100, null=True)
 
     def __str__(self):
