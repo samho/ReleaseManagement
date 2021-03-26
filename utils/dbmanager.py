@@ -1,5 +1,5 @@
-import datetime
 from user.models import *
+from django.utils import timezone as datetime
 
 # Method for User models
 
@@ -7,6 +7,10 @@ from user.models import *
 def find_all_users():
     all_users = User.objects.all()
     return all_users
+
+
+def find_user_by_id(user_id):
+    return User.objects.get(pk=user_id)
 
 
 def find_user_by_username(username):
@@ -29,8 +33,8 @@ def save_user(realname, username, password, email):
     new_user.real_name = realname
     new_user.password = password
     new_user.email = email
-    new_user.created_at = datetime.datetime.now()
-    new_user.updated_at = datetime.datetime.now()
+    new_user.created_at = datetime.now()
+    new_user.updated_at = datetime.now()
     # save new user into db.
     try:
         new_user.save()
@@ -38,10 +42,31 @@ def save_user(realname, username, password, email):
         print(e)
         return False
 
+    return new_user.id
+
+
+def update_user(user_id, realname, username, password, email):
+    update_user = find_user_by_id(user_id)
+    update_user.real_name = realname
+    update_user.user_name = username
+    update_user.password = password
+    update_user.email = email
+    update_user.updated_at = datetime.now()
+    try:
+        update_user.save()
+    except Exception as e:
+        print(e)
+        return False
+
     return True
 
 
-if __name__ == '__main__':
-    a = save_user("Sam Ho", 'samhocngz', '123456', 'samho@123.com')
+def delete_user_by_id(user_id):
+    delete_user = find_user_by_id(user_id)
+    delete_user.delete()
+
+    
+
+
     
 

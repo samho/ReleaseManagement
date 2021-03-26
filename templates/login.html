@@ -5,6 +5,12 @@
         <div class="row-fluid">
             <div class="row-fluid">
                 <div class="login-box">
+                    {% if message %}
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Login Fail.</strong> {{ message }}
+                    </div>
+                    {% endif %}
                     <div class="icons">
                         <a href="index.html"><i class="halflings-icon home"></i></a>
                         <a href="#"><i class="halflings-icon cog"></i></a>
