@@ -1,4 +1,5 @@
 from user.models import *
+from application.models import *
 from django.core.paginator import Paginator
 from ReleaseManagement.config import *
 from django.utils import timezone as datetime
@@ -195,7 +196,120 @@ def delete_user_role_mapping(mapping_id):
 
     return True
 
+# Methods of Application models
 
 
-    
+def find_all_applications():
+    return Application.objects.all().order_by("id")
+
+
+def find_all_applications_pagination():
+    return Paginator(find_all_applications(), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_application_by_id(app_id):
+    return Application.objects.get(pk=app_id)
+
+
+def find_application_by_name(app_name):
+    return Application.objects.filter(name=app_name).order_by("id")
+
+
+def save_application(app_name, comment="None"):
+    # create new application
+    new_app = Application()
+    new_app.name = app_name
+    new_app.comment = comment
+    new_app.created_at = datetime.now()
+    # try to save
+    try:
+        new_app.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_app.id
+
+
+def update_application(app_id, app_name, comment):
+    update_app = find_application_by_id(app_id)
+    update_app.name = app_name
+    update_app.comment = comment
+    # try to update
+    try:
+        update_app.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_application(app_id):
+    delete_app = find_application_by_id(app_id)
+    # try to delete
+    try:
+        delete_app.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+# Method of ApplicationPort model
+
+
+def find_application_by_port(app_port):
+    return ApplicationPort.objects.filter(port=app_port).order_by("id")
+
+
+def find_port_by_application(app_id):
+    return ApplicationPort.objects.filter(app_id=app_id).order_by("id")
+
+
+def find_application_port_by_id(mapping_id):
+    return ApplicationPort.objects.get(pk=mapping_id)
+
+
+def save_application_port_mapping(app_id, port, comment="None"):
+    # create new application -> port mapping
+    a_p_mapping = ApplicationPort()
+    a_p_mapping.app_id = app_id
+    a_p_mapping.port = port
+    a_p_mapping.comment = comment
+    # try to save
+    try:
+        a_p_mapping.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return a_p_mapping.id
+
+
+def update_application_port_mapping(mapping_id, app_id, port, comment):
+    update_a_p_mapping = find_application_port_by_id(mapping_id)
+    update_a_p_mapping.app_id = app_id
+    update_a_p_mapping.port = port
+    update_a_p_mapping.comment = comment
+    # try to update
+    try:
+        update_a_p_mapping.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_application_port_mapping(mapping_id):
+    delete_a_p_mapping = find_application_port_by_id(mapping_id)
+    # try to delete
+    try:
+        delete_a_p_mapping.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
 
