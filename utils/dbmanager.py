@@ -1,5 +1,6 @@
 from user.models import *
 from application.models import *
+from deployment.models import *
 from django.core.paginator import Paginator
 from ReleaseManagement.config import *
 from django.utils import timezone as datetime
@@ -313,3 +314,365 @@ def delete_application_port_mapping(mapping_id):
 
     return True
 
+# Method of Task
+
+
+def find_all_task():
+    return Task.objects.all().order_by("id")
+
+
+def find_all_task_pagination():
+    return Paginator(Task.objects.all().order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_by_id(task_kd):
+    return Task.objects.get(pk=task_kd)
+
+
+def find_task_by_method(method):
+    return Task.objects.filter(task_method=method).order_by("id")
+
+
+def find_task_by_date(create_date):
+    return Task.objects.filter(created_at=create_date).order_by("id")
+
+
+def find_task_by_name(task_name):
+    return Task.objects.filter(name=task_name).order_by("id")
+
+
+def save_task(name, method, comment="None"):
+    # Create a task
+    new_task = Task()
+    new_task.name = name
+    new_task.comment = comment
+    new_task.task_method = method
+    new_task.created_at = datetime.now()
+    # try to save
+    try:
+        new_task.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_task.id
+
+
+def update_task(task_id, name, method, comment):
+    update_task = find_task_by_id(task_id)
+    update_task.name = name
+    update_task.task_method = method
+    update_task.comment = comment
+    # try to update
+    try:
+        update_task.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task(task_id):
+    delete_task = find_task_by_id(task_id)
+    # try to delete
+    try:
+        delete_task.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+# Method of TaskAnsible
+
+
+def find_task_ansible_by_id(ta_id):
+    return TaskAnsible.objects.get(pk=ta_id)
+
+
+def find_task_ansible_by_task_id(task_id):
+    return TaskAnsible.objects.get(task_id=task_id)
+
+
+def save_task_ansible(task_id, playbook_path, playbook_name):
+    new_ta = TaskAnsible()
+    new_ta.task_id = task_id
+    new_ta.playbook_path = playbook_path
+    new_ta.playbook_name = playbook_name
+    # try to save
+    try:
+        new_ta.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_ta.id
+
+
+def update_task_ansible(ta_id, task_id, playbook_path, playbook_name):
+    update_ta = find_task_ansible_by_id(ta_id)
+    update_ta.task_id = task_id
+    update_ta.playbook_path = playbook_path
+    update_ta.playbook_name = playbook_name
+    # try to update
+    try:
+        update_ta.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task_ansible(ta_id):
+    delete_ta = find_task_ansible_by_id(ta_id)
+    # try to delete
+    try:
+        delete_ta.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+# Method of TaskHostMapping
+
+
+def find_all_task_host_mapping():
+    return TaskHostMapping.objects.all().order_by("id")
+
+
+def find_task_host_mapping_by_id(th_id):
+    return TaskHostMapping.objects.get(pk=th_id)
+
+
+def find_task_host_mapping_by_task_pagination(task_id):
+    return Paginator(TaskHostMapping.objects.filter(task_id=task_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_host_mapping_by_host_pagination(host_id):
+    return Paginator(TaskHostMapping.objects.filter(host_id=host_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def save_task_host_mapping(task_id, host_id):
+    new_th_mapping = TaskHostMapping()
+    new_th_mapping.task_id = task_id
+    new_th_mapping.host_id = host_id
+    # try to save
+    try:
+        new_th_mapping.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_th_mapping.id
+
+
+def update_task_host_mapping(th_id, task_id, host_id):
+    update_th_mapping = find_task_host_mapping_by_id(th_id)
+    update_th_mapping.task_id = task_id
+    update_th_mapping.host_id = host_id
+    # try to save
+    try:
+        update_th_mapping.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task_host_mapping(th_id):
+    delete_th_mapping = find_task_host_mapping_by_id(th_id)
+    # try to delete
+    try:
+        delete_th_mapping.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+# Method of TaskAppMapping
+
+
+def find_all_app_host_mapping():
+    return TaskAppMapping.objects.all().order_by("id")
+
+
+def find_task_app_mapping_by_id(ta_id):
+    return TaskAppMapping.objects.get(pk=ta_id)
+
+
+def find_task_app_mapping_by_task_pagination(task_id):
+    return Paginator(TaskAppMapping.objects.filter(task_id=task_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_app_mapping_by_host_pagination(app_id):
+    return Paginator(TaskAppMapping.objects.filter(app_id=app_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def save_task_app_mapping(task_id, app_id):
+    new_ta_mapping = TaskHostMapping()
+    new_ta_mapping.task_id = task_id
+    new_ta_mapping.app_id = app_id
+    # try to save
+    try:
+        new_ta_mapping.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_ta_mapping.id
+
+
+def update_task_app_mapping(ta_id, task_id, app_id):
+    update_ta_mapping = find_task_app_mapping_by_id(ta_id)
+    update_ta_mapping.task_id = task_id
+    update_ta_mapping.host_id = app_id
+    # try to save
+    try:
+        update_ta_mapping.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task_app_mapping(ta_id):
+    delete_ta_mapping = find_task_app_mapping_by_id(ta_id)
+    # try to delete
+    try:
+        delete_ta_mapping.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+# Method of TaskServiceMapping
+
+
+def find_all_task_service_mapping():
+    return TaskServiceMapping.objects.all().order_by("id")
+
+
+def find_task_service_mapping_by_id(ts_id):
+    return TaskServiceMapping.objects.get(pk=ts_id)
+
+
+def find_task_service_mapping_by_task_pagination(task_id):
+    return Paginator(TaskServiceMapping.objects.filter(task_id=task_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_service_mapping_by_service_pagination(service_id):
+    return Paginator(TaskServiceMapping.objects.filter(service_id=service_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def save_task_service_mapping(task_id, service_id):
+    new_ts_mapping = TaskServiceMapping()
+    new_ts_mapping.task_id = task_id
+    new_ts_mapping.service_id = service_id
+    # try to save
+    try:
+        new_ts_mapping.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_ts_mapping.id
+
+
+def update_task_service_mapping(ts_id, task_id, service_id):
+    update_ts_mapping = find_task_service_mapping_by_id(ts_id)
+    update_ts_mapping.task_id = task_id
+    update_ts_mapping.service_id = service_id
+    # try to save
+    try:
+        update_ts_mapping.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task_service_mapping(ts_id):
+    delete_ts_mapping = find_task_service_mapping_by_id(ts_id)
+    # try to delete
+    try:
+        delete_ts_mapping.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+# Method of TaskRunResult
+
+
+def find_all_task_run_result_pagination():
+    return Paginator(TaskRunResult.objects.all().order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_run_result_by_id(trr_id):
+    return TaskRunResult.objects.get(pk=trr_id)
+
+
+def find_task_run_result_by_status_pagination(status):
+    return Paginator(TaskRunResult.objects.filter(status=status).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_task_run_result_by_task(task_id):
+    return TaskRunResult.objects.filter(task_id=task_id).order_by("id")
+
+
+def save_task_run_result(task_id, status, start_datetime, end_datetime, result_content="None"):
+    new_trr = TaskRunResult()
+    new_trr.task_id = task_id
+    new_trr.status = status
+    new_trr.result_content = result_content
+    new_trr.started_at = start_datetime
+    new_trr.end_at = end_datetime
+    # try to save
+    try:
+        new_trr.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_trr.id
+
+
+def update_task_run_result(trr_id, task_id, status, start_datetime, end_datetime, result_content):
+    update_trr = TaskRunResult()
+    update_trr.task_id = task_id
+    update_trr.status = status
+    update_trr.result_content = result_content
+    update_trr.started_at = start_datetime
+    update_trr.end_at = end_datetime
+    # try to update
+    try:
+        update_trr.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_task_run_result(trr_id):
+    delete_trr = find_task_run_result_by_id(trr_id)
+    # try to delete
+    try:
+        delete_trr.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
