@@ -314,6 +314,67 @@ def delete_application_port_mapping(mapping_id):
 
     return True
 
+
+# Method of ApplicationFeatures
+
+
+def find_application_feature_by_app_pagination(app_id):
+    return Paginator(ApplicationFeatures.objects.filter(app_id=app_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_application_feature_by_feature(f_id):
+    return Paginator(ApplicationFeatures.objects.filter(feature_id=f_id).order_by("id"), DEFAULT_ITEM_PER_PAGE)
+
+
+def find_application_feature_by_id(af_id):
+    return ApplicationFeatures.objects.get(pk=af_id)
+
+
+def save_application_feature(app_id, f_id, comment="None"):
+    # create new object
+    new_af = ApplicationFeatures()
+    new_af.app_id = app_id
+    new_af.feature_id = f_id
+    new_af.comment = comment
+    # try to save
+    try:
+        new_af.save()
+    except Exception as e:
+        print(e)
+        return None
+
+    return new_af.id
+
+
+def update_application_feature(af_id, app_id, f_id, comment):
+    # get existed item
+    update_af = find_application_feature_by_id(af_id)
+    update_af.app_id = app_id
+    update_af.feature_id = f_id
+    update_af.comment = comment
+    # try to update
+    try:
+        update_af.save()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def delete_application_feature(af_id):
+    # get existed item
+    delete_af = find_application_feature_by_id(af_id)
+    # try to delete
+    try:
+        delete_af.delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
 # Method of Task
 
 

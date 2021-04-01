@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'deployment.apps.DeploymentConfig',
     'audit.apps.AuditConfig',
     'utils.apps.UtilsConfig',
+    'testing.apps.TestingConfig',
 ]
 
 MIDDLEWARE = [

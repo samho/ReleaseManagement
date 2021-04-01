@@ -5,7 +5,7 @@ from django.db import models
 class Application(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     comment = models.CharField(max_length=300, null=True)
-    version = models.CharField(max_length=20)
+    version = models.CharField(max_length=20, default="None")
     created_at = models.DateTimeField
 
     def __str__(self):
